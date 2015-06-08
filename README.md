@@ -1,4 +1,4 @@
-# ITS Mimaki Venylcutter
+# ITS Mimaki Vinylcutter
 
 ## About
 
