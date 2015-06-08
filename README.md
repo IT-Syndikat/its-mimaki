@@ -2,7 +2,7 @@
 
 ## About
 
-The webserver provided in this repository enables our venylcutter to print
+The webserver provided in this repository enables our vinylcutter to print
 files using a very simple webinterface, hence no printer driver or cable
 connection between your laptop and the cutter is required.
 
