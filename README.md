@@ -1,5 +1,7 @@
 # ITS Mimaki Vinylcutter
 
+Maintainer: Mindworker
+
 ## About
 
 The webserver provided in this repository enables our vinylcutter to print
