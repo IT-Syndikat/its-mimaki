@@ -1,25 +1,14 @@
 # ITS Mimaki Vinylcutter
 
-Maintainer: Mindworker
+Maintainer: tyrolyean
 
 ## About
 
-The webserver provided in this repository enables our vinylcutter to print
-files using a very simple webinterface, hence no printer driver or cable
-connection between your laptop and the cutter is required.
+These scripts are used for our vinylcutter "mimaki". It basically writes the
+hpgl files it gets to the device the cutter is conected at.
 
-There is also an option to apply automatic scaling in case you are using an
-older version of inkscape.
+## Requirements
 
-## Install
-
-These files are placed on a Raspberry Pi under `/opt/mimaki` except for the
-startup script. This will become `/etc/init.d/mimaki`.
-
-In order to run the webserver build the executable using Go.
-
-After moving and building you can start the webservice using:
-
-    # service mimaki start
-
-Use `update-rc.d` to start this service automatically on boot.
+It only requires a http server which is able to execute php scripts and the
+user which the script is run as needs to be able to acces the device the
+plotter is connected at.
