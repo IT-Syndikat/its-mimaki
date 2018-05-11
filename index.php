@@ -10,7 +10,7 @@
 		<p>Plot things!</p>
 		<form method="POST" action="upload.php" enctype="multipart/form-data">
                         <input type="file" id="print" name="print" accept="*.hpgl" required></input>
-                        <input type="check" id="scale" name="scale"></input>
+                        <input type="checkbox" id="scale" name="scale"></input>
 			<button type="submit">PRINT</button>
 		</form>
 	</body>
