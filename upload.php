@@ -35,12 +35,13 @@ if(!isset($_FILES['print']) || !$_POST['scale']){
         <p>
 <?php
 // variables
-$printfile="/tmp/out";
+$printfile="/dev/usb/lp0";
 $scale_factor = 1.24023;
 
 echo $_FILES['print']['tmp_name']." writing to file ".$printfile."\n</br>";
 
 echo file_get_contents($_FILES['print']['tmp_name']);
+
 // Check if scaling is needed
 if($_POST['scale']){
         echo "scaling by factor ".$scale_factor."\n</br>";
@@ -71,19 +72,20 @@ function scale($INPUT, $scale_factor) {
                 }else{
                         $i = 1;
                         $exploded = explode(',',$COMMAND);
+                        $explodecount = count($exploded);
                         foreach ($exploded as $VALUE) {
                                 if(is_numeric($VALUE)){
                                         // Scale integer values by factor
                                         $scaled = round(((int)$VALUE) 
                                                 * $scale_factor);
                                         $OUT = $OUT . $scaled;
-                                        if($i != count($exploded)){
+                                        if($i != $explodecount){
                                                 $OUT = $OUT . ',';
                                         }
                                 }else{
                                         // Can't sclae non-integer values
                                         $OUT =$OUT . $VALUE;
-                                        if($i != count($exploded)){
+                                        if($i != $explodecount){
                                                 $OUT = $OUT.',';
                                         }
                                 }
