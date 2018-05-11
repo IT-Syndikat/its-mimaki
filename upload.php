@@ -35,46 +35,63 @@ if(!isset($_FILES['print']) || !$_POST['scale']){
         <p>
 <?php
 // variables
-$printfile="/dev/usb/lp0";
+$printfile="/tmp/out";
 $scale_factor = 1.24023;
 
 echo $_FILES['print']['tmp_name']." writing to file ".$printfile."\n</br>";
 
+echo file_get_contents($_FILES['print']['tmp_name']);
 // Check if scaling is needed
 if($_POST['scale']){
         echo "scaling by factor ".$scale_factor."\n</br>";
-
+        $output = scale(file_get_contents($_FILES['print']['tmp_name']),
+                $scale_factor);
+}else{
+	$output = $_FILES['print']['tmp_name'];
 }
 
+echo "\n<\br>REAL OUTPUT:</br>\n".$output."\n</br>";
 
-echo file_get_contents($_FILES['print']['tmp_name']);
 echo "\n\n writing file...</br>\n";
 
-file_put_contents($printfile,file_get_contents($_FILES['print']['tmp_name']));
+file_put_contents($printfile,$output);
 
 echo "DONE</br>\n";
 
 // FUNCTIONS
-
-function scale($INPUT) {
+/*
+ * This function scales the hpgl file by a given factor, the code was 
+ * transalted from the original python file from @W4RH4WK.
+ */
+function scale($INPUT, $scale_factor) {
         $OUT = "";
         foreach (explode(';',$INPUT) as $COMMAND) {
-                if($VAL == ""){
+                if($COMMAND == ""){
                         continue;
                 }else{
-                        foreach (explode(',',$COMMAND) as $VALUE) {
-                                if(is_int($VALUE)){
+                        $i = 1;
+                        $exploded = explode(',',$COMMAND);
+                        foreach ($exploded as $VALUE) {
+                                if(is_numeric($VALUE)){
                                         // Scale integer values by factor
-                                        $scaled = ((int)$VALUE) * $scale_factor;
-                                        $OUT += $scaled.',';
+                                        $scaled = round(((int)$VALUE) 
+                                                * $scale_factor);
+                                        $OUT = $OUT . $scaled;
+                                        if($i != count($exploded)){
+                                                $OUT = $OUT . ',';
+                                        }
                                 }else{
                                         // Can't sclae non-integer values
-                                        $OUT += $VALUE. ",";
+                                        $OUT =$OUT . $VALUE;
+                                        if($i != count($exploded)){
+                                                $OUT = $OUT.',';
+                                        }
                                 }
+                                $i++;
                         }
 
                 }
-                $OUT += ";";
+		$OUT =$OUT.";";
         }
         return $OUT;
 }
@@ -82,3 +99,4 @@ function scale($INPUT) {
 </p>
 </body>
 </html>
+
