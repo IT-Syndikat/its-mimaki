@@ -34,9 +34,17 @@ if(!isset($_FILES['print']) || !$_POST['scale']){
         <h1>UPLOADING FILE</h1>
         <p>
 <?php
+
+include "hpgltool.php";
+
 // variables
 $printfile="/dev/usb/lp0";
-$scale_factor = 1.24023;
+
+// Why the scaling factor? Because old, very old, too old versions of inkscape
+// had the problem that the maximum dpi was hard-coded to 2048 and the mimaki
+// needs 2540. DOCUMENTED! and probably deprecated as well as noone uses that
+// verion of inkscape anymore
+$scale_factor = (2540.0 / 2048.0);
 
 echo $_FILES['print']['tmp_name']." writing to file ".$printfile."\n</br>";
 
@@ -45,7 +53,9 @@ echo file_get_contents($_FILES['print']['tmp_name']);
 // Check if scaling is needed
 if($_POST['scale']){
         echo "scaling by factor ".$scale_factor."\n</br>";
-        $output = scale(file_get_contents($_FILES['print']['tmp_name']),
+        echo "This might take a while. please stand by...</br>";
+        $output = scale_hpgl(
+                parse_hpgl(file_get_contents($_FILES['print']['tmp_name'])),
                 $scale_factor);
 }else{
 	$output = $_FILES['print']['tmp_name'];
@@ -59,44 +69,6 @@ file_put_contents($printfile,$output);
 
 echo "DONE</br>\n";
 
-// FUNCTIONS
-/*
- * This function scales the hpgl file by a given factor, the code was 
- * transalted from the original python file from @W4RH4WK.
- */
-function scale($INPUT, $scale_factor) {
-        $OUT = "";
-        foreach (explode(';',$INPUT) as $COMMAND) {
-                if($COMMAND == ""){
-                        continue;
-                }else{
-                        $i = 1;
-                        $exploded = explode(',',$COMMAND);
-                        $explodecount = count($exploded);
-                        foreach ($exploded as $VALUE) {
-                                if(is_numeric($VALUE)){
-                                        // Scale integer values by factor
-                                        $scaled = round(((int)$VALUE) 
-                                                * $scale_factor);
-                                        $OUT = $OUT . $scaled;
-                                        if($i != $explodecount){
-                                                $OUT = $OUT . ',';
-                                        }
-                                }else{
-                                        // Can't sclae non-integer values
-                                        $OUT =$OUT . $VALUE;
-                                        if($i != $explodecount){
-                                                $OUT = $OUT.',';
-                                        }
-                                }
-                                $i++;
-                        }
-
-                }
-		$OUT =$OUT.";";
-        }
-        return $OUT;
-}
 ?>
 </p>
 </body>
