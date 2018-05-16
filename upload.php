@@ -54,9 +54,9 @@ echo file_get_contents($_FILES['print']['tmp_name']);
 if($_POST['scale']){
         echo "scaling by factor ".$scale_factor."\n</br>";
         echo "This might take a while. please stand by...</br>";
-        $output = scale_hpgl(
+        $output = plain_hpgl(scale_hpgl(
                 parse_hpgl(file_get_contents($_FILES['print']['tmp_name'])),
-                $scale_factor);
+                $scale_factor));
 }else{
 	$output = $_FILES['print']['tmp_name'];
 }
