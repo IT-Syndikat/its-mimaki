@@ -15,13 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-if(!isset($_FILES['print']) || !$_POST['scale']){
-        http_response_code(406);
-        exit(1);
-}
-// all variables exist
-
 ?>
 <!DOCTYPE>
 <html lang="en-US">
@@ -58,7 +51,7 @@ if($_POST['scale']){
                 parse_hpgl(file_get_contents($_FILES['print']['tmp_name'])),
                 $scale_factor));
 }else{
-	$output = $_FILES['print']['tmp_name'];
+	$output = file_get_contents($_FILES['print']['tmp_name']);
 }
 
 echo "\n<\br>REAL OUTPUT:</br>\n".$output."\n</br>";
