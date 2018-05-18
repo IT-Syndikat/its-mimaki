@@ -41,6 +41,7 @@ $scale_factor = (2540.0 / 2048.0);
 
 echo $_FILES['print']['tmp_name']." writing to file ".$printfile."\n</br>";
 
+// Debug the original output for debug purposes
 echo file_get_contents($_FILES['print']['tmp_name']);
 
 // Check if scaling is needed
@@ -54,6 +55,7 @@ if($_POST['scale']){
 	$output = file_get_contents($_FILES['print']['tmp_name']);
 }
 
+//output the final hpgl which is sent to the plotter for debug purposes again
 echo "\n<\br>REAL OUTPUT:</br>\n".$output."\n</br>";
 
 echo "\n\n writing file...</br>\n";

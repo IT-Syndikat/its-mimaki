@@ -1,5 +1,4 @@
 <?php
-
 /*
  * HPGL tools and stuff optimized for inkscape output 
  * Copyright © 2018 tyrolyean
@@ -65,6 +64,7 @@ function parse_hpgl($raw_input){
         return $output;
 }
 
+// Scales a hpgl array by a given factor
 function scale_hpgl($hpgl, $factor){
 
         for ($i = 0; $i < count($hpgl); $i++) {
@@ -73,6 +73,9 @@ function scale_hpgl($hpgl, $factor){
                         // The command is a pen up or pen down command and only
                         // those can be actually scaled
                         for($ii = 0; $ii < count($hpgl[$i][1]); $ii++){
+                                // HPGL would support decimal numbers, but we
+                                // don't know if our plotter does and we don't
+                                // try 
                                 $hpgl[$i][1][$ii] = 
                                         round($factor * $hpgl[$i][1][$ii]);
                         }        
@@ -83,6 +86,7 @@ function scale_hpgl($hpgl, $factor){
 
 }
 
+// Converts a HPGL array back to plain text format
 function plain_hpgl($input){
         
         global $HPGL_COMMAND_SPLIT;
