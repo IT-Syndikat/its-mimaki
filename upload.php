@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
         <meta charset="UTF-8">
@@ -39,24 +39,29 @@ $printfile="/dev/usb/lp1";
 // verion of inkscape anymore
 $scale_factor = (2540.0 / 2048.0);
 
-echo $_FILES['print']['tmp_name']." writing to file ".$printfile."\n</br>";
+$input_file = $_FILES['print']['tmp_name'];
+
+echo $input_file." writing to file ".$printfile."\n</br>";
+
+$input = file_get_contents($input_file);
+
+echo "Received ".strlen($input)." chars / bytes\n";
 
 // Debug the original output for debug purposes
-echo file_get_contents($_FILES['print']['tmp_name']);
 
 // Check if scaling is needed
 if($_POST['scale']){
         echo "scaling by factor ".$scale_factor."\n</br>";
         echo "This might take a while. please stand by...</br>";
-        $output = plain_hpgl(scale_hpgl(
-                parse_hpgl(file_get_contents($_FILES['print']['tmp_name'])),
-                $scale_factor));
+        $output = plain_hpgl(scale_hpgl(parse_hpgl($input)) ,$scale_factor);
 }else{
-	$output = file_get_contents($_FILES['print']['tmp_name']);
+	$output = $input;
 }
 
 //output the final hpgl which is sent to the plotter for debug purposes again
-echo "\n<\br>REAL OUTPUT:</br>\n".$output."\n</br>";
+echo "\n<\br>Output is ".strlen($output)." bytes long\n";
+
+echo $output;
 
 echo "\n\n writing file...</br>\n";
 
