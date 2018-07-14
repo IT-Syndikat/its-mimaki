@@ -31,7 +31,7 @@
 include "hpgltool.php";
 
 // variables
-$printfile="/dev/usb/lp0";
+$printfile="/dev/usb/lp1";
 
 // Why the scaling factor? Because old, very old, too old versions of inkscape
 // had the problem that the maximum dpi was hard-coded to 2048 and the mimaki
